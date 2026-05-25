@@ -1,0 +1,183 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 500,
+  "background": "transparent",
+  "projection": {
+    "type": "mercator",
+    "center": [
+      134,
+      -27
+    ],
+    "scale": 700
+  },
+  "layer": [
+    {
+      "data": {
+        "url": "data/ne_10m_admin_1_states_provinces.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_10m_admin_1_states_provinces"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.properties.admin == 'Australia'"
+        },
+        {
+          "lookup": "properties.postal",
+          "from": {
+            "data": {
+              "url": "data/state_participation.csv"
+            },
+            "key": "state_code",
+            "fields": [
+              "state",
+              "participation_rate",
+              "male_rate",
+              "female_rate"
+            ]
+          }
+        }
+      ],
+      "mark": {
+        "type": "geoshape",
+        "stroke": "#ffffff",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "color": {
+          "field": "participation_rate",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              58,
+              67
+            ],
+            "scheme": "goldorange",
+            "reverse": false
+          },
+          "legend": {
+            "title": "Participation Rate (%)",
+            "orient": "bottom-right",
+            "titleFont": "DM Sans",
+            "labelFont": "DM Sans",
+            "titleFontSize": 11,
+            "labelFontSize": 10,
+            "gradientLength": 120
+          }
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "title": "State/Territory"
+          },
+          {
+            "field": "participation_rate",
+            "title": "Participation Rate (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "male_rate",
+            "title": "Male Rate (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "female_rate",
+            "title": "Female Rate (%)",
+            "format": ".1f"
+          }
+        ],
+        "stroke": {
+          "condition": {
+            "param": "state_hover",
+            "empty": false,
+            "value": "#f2a72a"
+          },
+          "value": "#ffffff"
+        },
+        "strokeWidth": {
+          "condition": {
+            "param": "state_hover",
+            "empty": false,
+            "value": 3
+          },
+          "value": 1.5
+        }
+      },
+      "params": [
+        {
+          "name": "state_hover",
+          "select": {
+            "type": "point",
+            "on": "mouseover",
+            "clear": "mouseout"
+          }
+        }
+      ]
+    },
+    {
+      "data": {
+        "url": "data/ne_10m_admin_1_states_provinces.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_10m_admin_1_states_provinces"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.properties.admin == 'Australia'"
+        },
+        {
+          "filter": "indexof(['Western Australia', 'Northern Territory', 'Queensland', 'South Australia', 'New South Wales', 'Victoria', 'Tasmania'], datum.properties.name) >= 0"
+        },
+        {
+          "lookup": "properties.postal",
+          "from": {
+            "data": {
+              "url": "data/state_participation.csv"
+            },
+            "key": "state_code",
+            "fields": [
+              "state",
+              "participation_rate"
+            ]
+          }
+        },
+        {
+          "filter": "datum.participation_rate != null"
+        },
+        {
+          "calculate": "datum.participation_rate + '%'",
+          "as": "rate_label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "fontSize": 10,
+        "fontWeight": "bold",
+        "color": "#1a1a2e",
+        "font": "DM Sans"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "properties.longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "properties.latitude",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "rate_label"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": "transparent"
+    },
+    "font": "DM Sans"
+  }
+}

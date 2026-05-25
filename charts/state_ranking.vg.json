@@ -1,0 +1,203 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 260,
+  "background": "transparent",
+  "data": {
+    "url": "data/state_participation.csv"
+  },
+  "transform": [
+    {
+      "fold": [
+        "male_rate",
+        "female_rate"
+      ],
+      "as": [
+        "sex",
+        "rate"
+      ]
+    },
+    {
+      "calculate": "datum.sex == 'male_rate' ? 'Male' : 'Female'",
+      "as": "Sex"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "strokeWidth": 2,
+        "color": "#c8c8d0"
+      },
+      "encoding": {
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "participation_rate",
+            "order": "descending"
+          },
+          "axis": {
+            "title": null,
+            "labelFont": "DM Sans",
+            "labelFontSize": 11
+          }
+        },
+        "x": {
+          "field": "rate",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              50,
+              75
+            ]
+          },
+          "axis": {
+            "title": "Participation Rate (%)",
+            "labelFont": "DM Sans",
+            "titleFont": "DM Sans",
+            "labelFontSize": 10
+          }
+        },
+        "detail": {
+          "field": "state"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 80
+      },
+      "encoding": {
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "participation_rate",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "rate",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              50,
+              75
+            ]
+          }
+        },
+        "color": {
+          "field": "Sex",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Male",
+              "Female"
+            ],
+            "range": [
+              "#2563a8",
+              "#e8864a"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "labelFont": "DM Sans",
+            "titleFont": "DM Sans",
+            "title": null
+          }
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "Sex"
+          },
+          {
+            "field": "rate",
+            "title": "Rate (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.Sex == 'Male'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 8,
+        "fontSize": 10,
+        "fontWeight": "bold",
+        "color": "#2563a8"
+      },
+      "encoding": {
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "participation_rate",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "rate",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "rate",
+          "type": "quantitative",
+          "format": ".1f"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.Sex == 'Female'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -8,
+        "fontSize": 10,
+        "fontWeight": "bold",
+        "color": "#e8864a"
+      },
+      "encoding": {
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "participation_rate",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "rate",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "rate",
+          "type": "quantitative",
+          "format": ".1f"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": "transparent"
+    },
+    "font": "DM Sans"
+  }
+}

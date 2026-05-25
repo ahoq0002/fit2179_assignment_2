@@ -1,0 +1,218 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
+  "width": "container",
+  "height": 320,
+  "background": "transparent",
+
+  "data": {
+    "url": "data/gender_activity.csv"
+  },
+
+  "transform": [
+    {
+      "fold": ["male_rate", "female_rate"],
+      "as": ["sex", "rate"]
+    },
+    {
+      "calculate": "datum.sex == 'male_rate' ? -datum.rate : datum.rate",
+      "as": "signed_rate"
+    },
+    {
+      "calculate": "datum.sex == 'male_rate' ? 'Male' : 'Female'",
+      "as": "Sex"
+    },
+    {
+      "calculate": "format(datum.rate, '.1f') + '%'",
+      "as": "rate_label"
+    }
+  ],
+
+  "layer": [
+    {
+      "transform": [
+        { "filter": "datum.Sex == 'Male'" }
+      ],
+      "mark": {
+        "type": "bar",
+        "cornerRadiusTopLeft": 4,
+        "cornerRadiusBottomLeft": 4
+      },
+      "encoding": {
+        "y": {
+          "field": "activity",
+          "type": "nominal",
+          "sort": {
+            "field": "female_rate",
+            "order": "descending"
+          },
+          "axis": {
+            "title": null,
+            "labelFont": "DM Sans",
+            "labelFontSize": 11
+          }
+        },
+        "x": {
+          "field": "signed_rate",
+          "type": "quantitative",
+          "scale": {
+            "domain": [-45, 72]
+          },
+          "axis": {
+            "title": "Participation Rate (%) — Male ← | → Female",
+            "labelExpr": "abs(datum.value)",
+            "labelFont": "DM Sans",
+            "titleFont": "DM Sans",
+            "labelFontSize": 10,
+            "gridColor": "#e5e7eb"
+          }
+        },
+        "color": {
+          "field": "Sex",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Male", "Female"],
+            "range": ["#2563a8", "#e8864a"]
+          },
+          "legend": {
+            "orient": "top",
+            "labelFont": "DM Sans",
+            "title": null
+          }
+        },
+        "tooltip": [
+          { "field": "activity", "title": "Activity" },
+          { "field": "Sex" },
+          { "field": "rate", "title": "Rate (%)", "format": ".1f" }
+        ]
+      }
+    },
+
+    {
+      "transform": [
+        { "filter": "datum.Sex == 'Female'" }
+      ],
+      "mark": {
+        "type": "bar",
+        "cornerRadiusTopRight": 4,
+        "cornerRadiusBottomRight": 4
+      },
+      "encoding": {
+        "y": {
+          "field": "activity",
+          "type": "nominal",
+          "sort": {
+            "field": "female_rate",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "signed_rate",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "Sex",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Male", "Female"],
+            "range": ["#2563a8", "#e8864a"]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          { "field": "activity", "title": "Activity" },
+          { "field": "Sex" },
+          { "field": "rate", "title": "Rate (%)", "format": ".1f" }
+        ]
+      }
+    },
+
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#172033",
+        "strokeWidth": 2.2
+      },
+      "encoding": {
+        "x": {
+          "datum": 0
+        }
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "filter": "datum.Sex == 'Male'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": -12,
+        "font": "DM Sans",
+        "fontSize": 10,
+        "fontWeight": "bold",
+        "color": "#172033"
+      },
+      "encoding": {
+        "x": {
+          "field": "signed_rate",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "activity",
+          "type": "nominal",
+          "sort": {
+            "field": "female_rate",
+            "order": "descending"
+          }
+        },
+        "text": {
+          "field": "rate_label"
+        }
+      }
+    },
+
+    {
+      "transform": [
+        {
+          "filter": "datum.Sex == 'Female'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 7,
+        "font": "DM Sans",
+        "fontSize": 10,
+        "fontWeight": "bold",
+        "color": "#172033"
+      },
+      "encoding": {
+        "x": {
+          "field": "signed_rate",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "activity",
+          "type": "nominal",
+          "sort": {
+            "field": "female_rate",
+            "order": "descending"
+          }
+        },
+        "text": {
+          "field": "rate_label"
+        }
+      }
+    }
+  ],
+
+  "config": {
+    "view": {
+      "stroke": "transparent"
+    },
+    "font": "DM Sans"
+  }
+}

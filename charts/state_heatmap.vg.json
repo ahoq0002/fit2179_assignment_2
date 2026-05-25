@@ -1,0 +1,241 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 260,
+  "background": "transparent",
+  "data": {
+    "values": [
+      {
+        "state": "NSW",
+        "measure": "Overall Rate",
+        "value": 60.4
+      },
+      {
+        "state": "NSW",
+        "measure": "Male Rate",
+        "value": 64.2
+      },
+      {
+        "state": "NSW",
+        "measure": "Female Rate",
+        "value": 56.7
+      },
+      {
+        "state": "VIC",
+        "measure": "Overall Rate",
+        "value": 61.8
+      },
+      {
+        "state": "VIC",
+        "measure": "Male Rate",
+        "value": 65.9
+      },
+      {
+        "state": "VIC",
+        "measure": "Female Rate",
+        "value": 58.0
+      },
+      {
+        "state": "QLD",
+        "measure": "Overall Rate",
+        "value": 59.1
+      },
+      {
+        "state": "QLD",
+        "measure": "Male Rate",
+        "value": 63.5
+      },
+      {
+        "state": "QLD",
+        "measure": "Female Rate",
+        "value": 54.9
+      },
+      {
+        "state": "SA",
+        "measure": "Overall Rate",
+        "value": 61.3
+      },
+      {
+        "state": "SA",
+        "measure": "Male Rate",
+        "value": 66.1
+      },
+      {
+        "state": "SA",
+        "measure": "Female Rate",
+        "value": 56.8
+      },
+      {
+        "state": "WA",
+        "measure": "Overall Rate",
+        "value": 62.7
+      },
+      {
+        "state": "WA",
+        "measure": "Male Rate",
+        "value": 67.0
+      },
+      {
+        "state": "WA",
+        "measure": "Female Rate",
+        "value": 58.6
+      },
+      {
+        "state": "TAS",
+        "measure": "Overall Rate",
+        "value": 65.2
+      },
+      {
+        "state": "TAS",
+        "measure": "Male Rate",
+        "value": 69.1
+      },
+      {
+        "state": "TAS",
+        "measure": "Female Rate",
+        "value": 61.5
+      },
+      {
+        "state": "NT",
+        "measure": "Overall Rate",
+        "value": 60.8
+      },
+      {
+        "state": "NT",
+        "measure": "Male Rate",
+        "value": 65.3
+      },
+      {
+        "state": "NT",
+        "measure": "Female Rate",
+        "value": 55.9
+      },
+      {
+        "state": "ACT",
+        "measure": "Overall Rate",
+        "value": 66.1
+      },
+      {
+        "state": "ACT",
+        "measure": "Male Rate",
+        "value": 70.2
+      },
+      {
+        "state": "ACT",
+        "measure": "Female Rate",
+        "value": 62.3
+      }
+    ]
+  },
+  "mark": {
+    "type": "rect",
+    "cornerRadius": 4
+  },
+  "encoding": {
+    "x": {
+      "field": "measure",
+      "type": "ordinal",
+      "sort": [
+        "Overall Rate",
+        "Male Rate",
+        "Female Rate"
+      ],
+      "scale": {
+        "paddingInner": 0.04,
+        "paddingOuter": 0.05
+      },
+      "axis": {
+        "title": null,
+        "labelFont": "DM Sans",
+        "labelFontSize": 11,
+        "labelAngle": 0
+      }
+    },
+    "y": {
+      "field": "state",
+      "type": "ordinal",
+      "sort": {
+        "field": "value",
+        "op": "mean",
+        "order": "descending"
+      },
+      "scale": {
+        "paddingInner": 0.04,
+        "paddingOuter": 0.05
+      },
+      "axis": {
+        "title": null,
+        "labelFont": "DM Sans",
+        "labelFontSize": 11
+      }
+    },
+    "color": {
+      "field": "value",
+      "type": "quantitative",
+      "scale": {
+        "domain": [
+          55,
+          70
+        ],
+        "range": [
+          "#fff3bf",
+          "#f97316",
+          "#b91c1c"
+        ]
+      },
+      "legend": {
+        "title": "Rate (%)",
+        "labelFont": "DM Sans",
+        "titleFont": "DM Sans",
+        "tickCount": 4,
+        "values": [
+          55,
+          60,
+          65,
+          70
+        ]
+      }
+    },
+    "tooltip": [
+      {
+        "field": "state",
+        "title": "State"
+      },
+      {
+        "field": "measure",
+        "title": "Measure"
+      },
+      {
+        "field": "value",
+        "title": "Rate (%)",
+        "format": ".1f"
+      }
+    ],
+    "opacity": {
+      "condition": {
+        "param": "cell_select",
+        "value": 1
+      },
+      "value": 0.4
+    }
+  },
+  "config": {
+    "view": {
+      "stroke": "transparent",
+      "step": 40
+    },
+    "font": "DM Sans",
+    "rect": {
+      "stroke": "white",
+      "strokeWidth": 2
+    }
+  },
+  "params": [
+    {
+      "name": "cell_select",
+      "select": {
+        "type": "point"
+      }
+    }
+  ]
+}

@@ -1,0 +1,339 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 300,
+  "background": "transparent",
+  "data": {
+    "values": [
+      {
+        "quintile": "Least Disadvantaged",
+        "estimate": 7.8,
+        "ci_low": 6.4,
+        "ci_high": 9.2,
+        "colour": "#86efac"
+      },
+      {
+        "quintile": "Fourth Quintile",
+        "estimate": 9.1,
+        "ci_low": 7.8,
+        "ci_high": 10.7,
+        "colour": "#fbbf24"
+      },
+      {
+        "quintile": "Middle Quintile",
+        "estimate": 12.1,
+        "ci_low": 10.3,
+        "ci_high": 14.2,
+        "colour": "#fb923c"
+      },
+      {
+        "quintile": "Second Quintile",
+        "estimate": 14.9,
+        "ci_low": 12.9,
+        "ci_high": 16.9,
+        "colour": "#ef4444"
+      },
+      {
+        "quintile": "Most Disadvantaged",
+        "estimate": 17.2,
+        "ci_low": 15.1,
+        "ci_high": 19.6,
+        "colour": "#b91c1c"
+      }
+    ]
+  },
+  "layer": [
+    {
+      "data": {
+        "values": [
+          {
+            "threshold": 14
+          }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "strokeDash": [
+          6,
+          5
+        ],
+        "strokeWidth": 2,
+        "color": "#dc2626",
+        "opacity": 0.6
+      },
+      "encoding": {
+        "x": {
+          "field": "threshold",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "threshold": 14,
+            "label": "Elevated concern threshold"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 8,
+        "dy": -115,
+        "font": "DM Sans",
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#dc2626"
+      },
+      "encoding": {
+        "x": {
+          "field": "threshold",
+          "type": "quantitative"
+        },
+        "y": {
+          "value": 135
+        },
+        "text": {
+          "field": "label"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x1": 10.8,
+            "x2": 15.2,
+            "y": "Least Disadvantaged",
+            "label": "2× higher inactivity"
+          }
+        ]
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "rule",
+            "strokeWidth": 1.0,
+            "color": "#64748b",
+            "opacity": 0.7
+          },
+          "encoding": {
+            "x": {
+              
+              "field": "x1",
+              "type": "quantitative"
+            },
+            "x2": {
+              "field": "x2"
+            },
+            "y": {
+              "value": 270
+            }
+            
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "opacity": 0.75,
+            "font": "DM Sans",
+            "fontSize": 11,
+            "fontWeight": "bold",
+            "color": "#475569",
+            "dy": -10
+          },
+          "encoding": {
+            "x": {
+              "value": 650
+            },
+            "y": {
+              "value": 270
+            },
+            "text": {
+              "field": "label"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "strokeWidth": 2.5,
+        "opacity": 0.85
+      },
+      "encoding": {
+        "y": {
+          "field": "quintile",
+          "type": "nominal",
+          "sort": [
+            "Least Disadvantaged",
+            "Fourth Quintile",
+            "Middle Quintile",
+            "Second Quintile",
+            "Most Disadvantaged"
+          ],
+          "axis": {
+            "title": null,
+            "labelFont": "DM Sans",
+            "labelFontSize": 12
+          }
+        },
+        "x": {
+          "field": "ci_low",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              5,
+              22
+            ]
+          },
+          "axis": {
+            "title": "Adults Reporting Zero Minutes of Activity (%)",
+            "labelFont": "DM Sans",
+            "titleFont": "DM Sans",
+            "labelFontSize": 10,
+            "titleFontSize": 11,
+            "grid": true,
+            "gridColor": "#eef2f7",
+            "tickCount": 9
+          }
+        },
+        "x2": {
+          "field": "ci_high"
+        },
+        "color": {
+          "field": "colour",
+          "type": "nominal",
+          "scale": null,
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "quintile",
+            "title": "Socioeconomic Group"
+          },
+          {
+            "field": "estimate",
+            "title": "Estimate (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "ci_low",
+            "title": "95% CI Low",
+            "format": ".1f"
+          },
+          {
+            "field": "ci_high",
+            "title": "95% CI High",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 150,
+        "stroke": "white",
+        "strokeWidth": 1.8
+      },
+      "encoding": {
+        "y": {
+          "field": "quintile",
+          "type": "nominal",
+          "sort": [
+            "Least Disadvantaged",
+            "Fourth Quintile",
+            "Middle Quintile",
+            "Second Quintile",
+            "Most Disadvantaged"
+          ]
+        },
+        "x": {
+          "field": "estimate",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "colour",
+          "type": "nominal",
+          "scale": null,
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "quintile",
+            "title": "Socioeconomic Group"
+          },
+          {
+            "field": "estimate",
+            "title": "Estimate (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "ci_low",
+            "title": "95% CI Low",
+            "format": ".1f"
+          },
+          {
+            "field": "ci_high",
+            "title": "95% CI High",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": -9,
+        "dy": 13,
+        "font": "DM Sans",
+        "fontSize": 11,
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "y": {
+          "field": "quintile",
+          "type": "nominal",
+          "sort": [
+            "Least Disadvantaged",
+            "Fourth Quintile",
+            "Middle Quintile",
+            "Second Quintile",
+            "Most Disadvantaged"
+          ]
+        },
+        "x": {
+          "field": "estimate",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "estimate",
+          "type": "quantitative",
+          "format": ".1f"
+        },
+        "color": {
+          "field": "colour",
+          "type": "nominal",
+          "scale": null,
+          "legend": null
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": "transparent"
+    },
+    "font": "DM Sans",
+    "axis": {
+      "domainColor": "#d1d5db",
+      "tickColor": "#d1d5db"
+    }
+  }
+}

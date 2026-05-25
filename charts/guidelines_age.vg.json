@@ -1,0 +1,454 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 320,
+  "background": "transparent",
+  "data": {
+    "url": "data/guidelines_age.csv"
+  },
+  "transform": [
+    {
+      "fold": [
+        "met_guidelines",
+        "did_150_min",
+        "five_or_more_days",
+        "strength_toning"
+      ],
+      "as": [
+        "measure_raw",
+        "value"
+      ]
+    },
+    {
+      "calculate": "datum.measure_raw == 'met_guidelines' ? 'Met Full Guidelines' : datum.measure_raw == 'did_150_min' ? '150+ Min Activity' : datum.measure_raw == 'five_or_more_days' ? '5+ Active Days/Week' : 'Strength Training 2+ Days'",
+      "as": "Measure"
+    },
+    {
+      "calculate": "datum.age_group == '18–24' ? 0 : datum.age_group == '25–34' ? 1 : datum.age_group == '35–44' ? 2 : datum.age_group == '45–54' ? 3 : 4",
+      "as": "age_index"
+    }
+  ],
+  "layer": [
+    {
+      "data": {
+        "values": [
+          {
+            "age_index": 0,
+            "age_group": "18–24"
+          },
+          {
+            "age_index": 1,
+            "age_group": "25–34"
+          },
+          {
+            "age_index": 2,
+            "age_group": "35–44"
+          },
+          {
+            "age_index": 3,
+            "age_group": "45–54"
+          },
+          {
+            "age_index": 4,
+            "age_group": "55–64"
+          }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "color": "#dbeafe",
+        "strokeWidth": 1.5,
+        "opacity": 0.55
+      },
+      "encoding": {
+        "x": {
+          "field": "age_index",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "age_index": 0,
+            "age_group": "18–24"
+          },
+          {
+            "age_index": 1,
+            "age_group": "25–34"
+          },
+          {
+            "age_index": 2,
+            "age_group": "35–44"
+          },
+          {
+            "age_index": 3,
+            "age_group": "45–54"
+          },
+          {
+            "age_index": 4,
+            "age_group": "55–64"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "dy": -8,
+        "font": "DM Sans",
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#172033"
+      },
+      "encoding": {
+        "x": {
+          "field": "age_index",
+          "type": "quantitative"
+        },
+        "y": {
+          "value": 0
+        },
+        "text": {
+          "field": "age_group"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.Measure != 'Met Full Guidelines'"
+        }
+      ],
+      "mark": {
+        "type": "line",
+        "interpolate": "monotone",
+        "strokeWidth": 2.2,
+        "opacity": 0.55
+      },
+      "encoding": {
+        "x": {
+          "field": "age_index",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              -0.15,
+              4.45
+            ]
+          },
+          "axis": {
+            "title": "Age Group",
+            "values": [
+              0,
+              1,
+              2,
+              3,
+              4
+            ],
+            "labelExpr": "datum.value == 0 ? '18–24' : datum.value == 1 ? '25–34' : datum.value == 2 ? '35–44' : datum.value == 3 ? '45–54' : '55–64'",
+            "labelFont": "DM Sans",
+            "titleFont": "DM Sans",
+            "labelFontSize": 10,
+            "titleFontSize": 11,
+            "grid": false,
+            "domainColor": "#d1d5db",
+            "tickColor": "#d1d5db"
+          }
+        },
+        "y": {
+          "field": "value",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              10,
+              85
+            ]
+          },
+          "axis": {
+            "title": "Adults Meeting Guideline Criterion (%)",
+            "labelFont": "DM Sans",
+            "titleFont": "DM Sans",
+            "labelFontSize": 10,
+            "titleFontSize": 11,
+            "gridColor": "#eef2f7"
+          }
+        },
+        "color": {
+          "field": "Measure",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "150+ Min Activity",
+              "5+ Active Days/Week",
+              "Strength Training 2+ Days",
+              "Met Full Guidelines"
+            ],
+            "range": [
+              "#2563a8",
+              "#5dbb73",
+              "#f0a500",
+              "#ef4444"
+            ]
+          },
+          "legend": {
+            "orient": "bottom",
+            "title": null,
+            "labelFont": "DM Sans",
+            "labelFontSize": 11,
+            "symbolSize": 120
+          }
+        },
+        "detail": {
+          "field": "Measure"
+        },
+        "order": {
+          "field": "age_index"
+        },
+        "tooltip": [
+          {
+            "field": "age_group",
+            "title": "Age Group"
+          },
+          {
+            "field": "Measure"
+          },
+          {
+            "field": "value",
+            "title": "Adults Meeting Criterion (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.Measure == 'Met Full Guidelines'"
+        }
+      ],
+      "mark": {
+        "type": "line",
+        "interpolate": "monotone",
+        "strokeWidth": 4,
+        "opacity": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "age_index",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "value",
+          "type": "quantitative"
+        },
+        "color": {
+          "value": "#ef4444"
+        },
+        "detail": {
+          "field": "Measure"
+        },
+        "order": {
+          "field": "age_index"
+        },
+        "tooltip": [
+          {
+            "field": "age_group",
+            "title": "Age Group"
+          },
+          {
+            "field": "Measure"
+          },
+          {
+            "field": "value",
+            "title": "Adults Meeting Criterion (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 85,
+        "stroke": "white",
+        "strokeWidth": 1.4
+      },
+      "encoding": {
+        "x": {
+          "field": "age_index",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "value",
+          "type": "quantitative"
+        },
+        "color": {
+          "field": "Measure",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "150+ Min Activity",
+              "5+ Active Days",
+              "Strength Training 2+ Days",
+              "Met Full Guidelines"
+            ],
+            "range": [
+              "#2563a8",
+              "#5dbb73",
+              "#f0a500",
+              "#ef4444"
+            ]
+          },
+          "legend": null
+        },
+        "opacity": {
+          "condition": {
+            "test": "datum.Measure == 'Met Full Guidelines'",
+            "value": 1
+          },
+          "value": 0.75
+        },
+        "tooltip": [
+          {
+            "field": "age_group",
+            "title": "Age Group"
+          },
+          {
+            "field": "Measure"
+          },
+          {
+            "field": "value",
+            "title": "Adults Meeting Criterion (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.age_index == 4"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 10,
+        "font": "DM Sans",
+        "fontSize": 11,
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "x": {
+          "field": "age_index",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "value",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Measure"
+        },
+        "color": {
+          "field": "Measure",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "150+ Min Activity",
+              "5+ Active Days",
+              "Strength Training 2+ Days",
+              "Met Full Guidelines"
+            ],
+            "range": [
+              "#2563a8",
+              "#5dbb73",
+              "#f0a500",
+              "#ef4444"
+            ]
+          },
+          "legend": null
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x1": 3.05,
+            "y1": 37,
+            "x2": 3.65,
+            "y2": 17,
+            "label": "Full guidelines remain far below the partial activity measures"
+          }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "color": "#ef4444",
+        "strokeWidth": 1.8,
+        "opacity": 0.85
+      },
+      "encoding": {
+        "x": {
+          "field": "x1",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "y1",
+          "type": "quantitative"
+        },
+        "x2": {
+          "field": "x2"
+        },
+        "y2": {
+          "field": "y2"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "x": 2.37,
+            "y": 42,
+            "label": "Full guidelines remain far below\npartial activity measures"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "font": "DM Sans",
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "lineBreak": "\n",
+        "lineHeight": 15,
+        "color": "#ef4444"
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": "transparent"
+    },
+    "font": "DM Sans",
+    "axis": {
+      "domainColor": "#d1d5db",
+      "tickColor": "#d1d5db"
+    }
+  }
+}

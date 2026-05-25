@@ -1,0 +1,176 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 320,
+  "background": "transparent",
+
+  "data": {
+    "url": "data/organised_roles.csv"
+  },
+
+  "transform": [
+    {
+      "fold": ["nonplaying_only", "playing_and_nonplaying", "playing_only"],
+      "as": ["role_type", "count"]
+    },
+    {
+      "calculate": "datum.role_type == 'nonplaying_only' ? 'Non-playing Role Only' : datum.role_type == 'playing_and_nonplaying' ? 'Playing + Non-playing' : 'Playing Role Only'",
+      "as": "Role"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "sum",
+          "field": "count",
+          "as": "state_total"
+        }
+      ],
+      "groupby": ["state"]
+    },
+    {
+      "calculate": "datum.count / datum.state_total",
+      "as": "pct"
+    },
+    {
+      "calculate": "datum.pct >= 0.09 ? format(datum.pct * 100, '.0f') + '%' : ''",
+      "as": "pct_label"
+    },
+    {
+      "calculate": "datum.Role == 'Non-playing Role Only' ? 0 : datum.Role == 'Playing + Non-playing' ? 1 : 2",
+      "as": "role_order"
+    }
+  ],
+
+  "layer": [
+    {
+      "mark": {
+        "type": "bar"
+      },
+      "encoding": {
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "playing_only",
+            "order": "descending"
+          },
+          "axis": {
+            "title": null,
+            "labelFont": "DM Sans",
+            "labelFontSize": 12
+          }
+        },
+        "x": {
+          "field": "count",
+          "type": "quantitative",
+          "stack": "normalize",
+          "axis": {
+            "format": "%",
+            "title": "Share of Total Participants",
+            "labelFont": "DM Sans",
+            "titleFont": "DM Sans",
+            "labelFontSize": 10,
+            "titleFontSize": 11,
+            "gridColor": "#f0f0f0"
+          }
+        },
+        "color": {
+          "field": "Role",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Non-playing Role Only",
+              "Playing + Non-playing",
+              "Playing Role Only"
+            ],
+            "range": [
+              "#f97316",
+              "#f59e0b",
+              "#14a89d"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "title": null,
+            "labelFont": "DM Sans",
+            "titleFont": "DM Sans",
+            "labelFontSize": 11,
+            "symbolSize": 120
+          }
+        },
+        "order": {
+          "field": "role_order",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "title": "State"
+          },
+          {
+            "field": "Role",
+            "title": "Role Type"
+          },
+          {
+            "field": "pct",
+            "title": "Share",
+            "format": ".1%"
+          },
+          {
+            "field": "count",
+            "title": "Participants ('000)",
+            "format": ","
+          }
+        ]
+      }
+    },
+
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 10,
+        "fontWeight": "bold",
+        "font": "DM Sans",
+        "color": "white",
+        "baseline": "middle"
+      },
+      "encoding": {
+        "y": {
+          "field": "state",
+          "type": "nominal",
+          "sort": {
+            "field": "playing_only",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "count",
+          "type": "quantitative",
+          "stack": "normalize",
+          "bandPosition": 0.5
+        },
+        "text": {
+          "field": "pct_label"
+        },
+        "detail": {
+          "field": "Role"
+        },
+        "order": {
+          "field": "role_order",
+          "type": "quantitative"
+        }
+      }
+    }
+  ],
+
+  "config": {
+    "view": {
+      "stroke": "transparent"
+    },
+    "font": "DM Sans",
+    "axis": {
+      "gridColor": "#f0f0f0",
+      "domainColor": "#d1d5db"
+    }
+  }
+}

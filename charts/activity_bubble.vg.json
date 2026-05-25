@@ -1,0 +1,333 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 390,
+  "background": "transparent",
+  "data": {
+    "url": "data/top_activities.csv"
+  },
+  "layer": [
+    {
+      "data": {
+        "values": [
+          {
+            "x": 0,
+            "y": 0
+          },
+          {
+            "x": 4500,
+            "y": 4500
+          }
+        ]
+      },
+      "mark": {
+        "type": "line",
+        "strokeDash": [
+          5,
+          4
+        ],
+        "color": "#c7ccd4",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "stroke": "#ffffff",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "x": {
+          "field": "male_participants",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              4500
+            ]
+          },
+          "axis": {
+            "title": "Male Participants ('000)",
+            "labelFont": "DM Sans",
+            "titleFont": "DM Sans",
+            "labelFontSize": 10,
+            "gridColor": "#e5e7eb"
+          }
+        },
+        "y": {
+          "field": "female_participants",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              4500
+            ]
+          },
+          "axis": {
+            "title": "Female Participants ('000)",
+            "labelFont": "DM Sans",
+            "titleFont": "DM Sans",
+            "labelFontSize": 10,
+            "gridColor": "#e5e7eb"
+          }
+        },
+        "size": {
+          "field": "total_participants",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              6500
+            ],
+            "range": [
+              90,
+              2400
+            ]
+          },
+          "legend": null
+        },
+        "color": {
+          "field": "category",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Outdoor & Walking",
+              "Gym & Fitness",
+              "Aquatic",
+              "Cycling & Motor",
+              "Running",
+              "Golf & Racquet",
+              "Team Sports",
+              "Other"
+            ],
+            "range": [
+              "#f2a72a",
+              "#e8864a",
+              "#3a8fbf",
+              "#2563a8",
+              "#e05a3a",
+              "#6bba6b",
+              "#8b5cf6",
+              "#94a3b8"
+            ]
+          },
+          "legend": {
+            "title": "Category",
+            "orient": "bottom",
+            "direction": "horizontal",
+            "columns": 2,
+            "labelFont": "DM Sans",
+            "titleFont": "DM Sans",
+            "labelFontSize": 9,
+            "titleFontSize": 10
+          }
+        },
+        "opacity": {
+          "condition": {
+            "param": "category_select",
+            "value": 0.82
+          },
+          "value": 0.15
+        },
+        "tooltip": [
+          {
+            "field": "activity",
+            "title": "Activity"
+          },
+          {
+            "field": "category",
+            "title": "Category"
+          },
+          {
+            "field": "male_participants",
+            "title": "Male ('000)",
+            "format": ","
+          },
+          {
+            "field": "female_participants",
+            "title": "Female ('000)",
+            "format": ","
+          },
+          {
+            "field": "total_participants",
+            "title": "Total ('000)",
+            "format": ","
+          }
+        ]
+      },
+      "params": [
+        {
+          "name": "category_select",
+          "select": {
+            "type": "point",
+            "fields": [
+              "category"
+            ]
+          },
+          "bind": "legend"
+        }
+      ]
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "label": "Total ('000)",
+            "x": 3600,
+            "y": 2550
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "font": "DM Sans",
+        "fontSize": 10,
+        "fontWeight": "bold",
+        "color": "#172033"
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "size": 6000,
+            "x": 4050,
+            "y": 2050
+          },
+          {
+            "size": 4000,
+            "x": 4050,
+            "y": 1500
+          },
+          {
+            "size": 2000,
+            "x": 4050,
+            "y": 1050
+          },
+          {
+            "size": 500,
+            "x": 4050,
+            "y": 720
+          }
+        ]
+      },
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "color": "#6b7280",
+        "opacity": 0.5,
+        "stroke": "#ffffff",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "size": {
+          "field": "size",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              6500
+            ],
+            "range": [
+              90,
+              2400
+            ]
+          }
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "label": "6k",
+            "x": 4380,
+            "y": 2050
+          },
+          {
+            "label": "4k",
+            "x": 4380,
+            "y": 1500
+          },
+          {
+            "label": "2k",
+            "x": 4380,
+            "y": 1050
+          },
+          {
+            "label": "500",
+            "x": 4380,
+            "y": 720
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 8,
+        "font": "DM Sans",
+        "fontSize": 9,
+        "color": "#4b5563"
+      },
+      "encoding": {
+        "x": {
+          "field": "x",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "label"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": "transparent"
+    },
+    "font": "DM Sans",
+    "axis": {
+      "gridColor": "#e5e7eb"
+    },
+    "legend": {
+      "padding": 4,
+      "labelLimit": 110
+    }
+  }
+}

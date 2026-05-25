@@ -1,0 +1,328 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 420,
+  "background": "transparent",
+  "padding": {
+    "left": 40,
+    "right": 40,
+    "top": 25,
+    "bottom": 25
+  },
+  "data": {
+    "values": [
+      {
+        "state": "New South Wales",
+        "abbr": "NSW",
+        "unpaid": 740,
+        "paid": 60
+      },
+      {
+        "state": "Queensland",
+        "abbr": "QLD",
+        "unpaid": 480,
+        "paid": 40
+      },
+      {
+        "state": "Victoria",
+        "abbr": "VIC",
+        "unpaid": 650,
+        "paid": 55
+      },
+      {
+        "state": "Western Australia",
+        "abbr": "WA",
+        "unpaid": 295,
+        "paid": 25
+      },
+      {
+        "state": "Northern Territory",
+        "abbr": "NT",
+        "unpaid": 35,
+        "paid": 3
+      },
+      {
+        "state": "South Australia",
+        "abbr": "SA",
+        "unpaid": 210,
+        "paid": 20
+      },
+      {
+        "state": "Tasmania",
+        "abbr": "TAS",
+        "unpaid": 75,
+        "paid": 8
+      },
+      {
+        "state": "Australian Capital Territory",
+        "abbr": "ACT",
+        "unpaid": 65,
+        "paid": 8
+      }
+    ]
+  },
+  "transform": [
+    {
+      "calculate": "datum.unpaid / datum.paid",
+      "as": "ratio"
+    },
+    {
+      "calculate": "format(datum.ratio, '.1f') + '\u00d7'",
+      "as": "ratio_label"
+    },
+    {
+      "calculate": "format(datum.ratio, '.1f') + ' unpaid volunteers per paid participant'",
+      "as": "ratio_long"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "arc",
+        "innerRadius": 34,
+        "stroke": "#ffffff",
+        "strokeWidth": 1.8,
+        "cornerRadius": 4,
+        "opacity": 0.9
+      },
+      "encoding": {
+        "theta": {
+          "field": "abbr",
+          "type": "nominal",
+          "sort": {
+            "field": "ratio",
+            "order": "descending"
+          },
+          "stack": true
+        },
+        "radius": {
+          "field": "ratio",
+          "type": "quantitative",
+          "scale": {
+            "type": "linear",
+            "domain": [
+              0,
+              13
+            ],
+            "range": [
+              19,
+              170
+            ]
+          }
+        },
+        "radius2": {
+          "value": 34
+        },
+        "color": {
+          "field": "abbr",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "NSW",
+              "QLD",
+              "VIC",
+              "WA",
+              "NT",
+              "SA",
+              "TAS",
+              "ACT"
+            ],
+            "range": [
+              "#f59e0b",
+              "#f2aa24",
+              "#e8864a",
+              "#d97745",
+              "#c0845a",
+              "#9fbd6a",
+              "#5eb3a7",
+              "#9bd8cf"
+            ]
+          },
+          "legend": null
+        },
+        "strokeWidth": {
+          "condition": {
+            "param": "arc_hover",
+            "empty": false,
+            "value": 3
+          },
+          "value": 1.6
+        },
+        "fillOpacity": {
+          "condition": {
+            "param": "arc_hover",
+            "empty": false,
+            "value": 1
+          },
+          "value": 0.72
+        },
+        "tooltip": [
+          {
+            "field": "state",
+            "title": "State / Territory"
+          },
+          {
+            "field": "unpaid",
+            "title": "Unpaid Volunteers ('000)",
+            "format": ","
+          },
+          {
+            "field": "paid",
+            "title": "Paid Involvement ('000)",
+            "format": ","
+          },
+          {
+            "field": "ratio_long",
+            "title": "Ratio"
+          }
+        ]
+      },
+      "params": [
+        {
+          "name": "arc_hover",
+          "select": {
+            "type": "point",
+            "on": "mouseover",
+            "clear": "mouseout"
+          }
+        }
+      ]
+    },
+    {
+      "mark": {
+        "type": "text",
+        "radiusOffset": 24,
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "font": "DM Sans",
+        "color": "#172033"
+      },
+      "encoding": {
+        "theta": {
+          "field": "abbr",
+          "type": "nominal",
+          "sort": {
+            "field": "ratio",
+            "order": "descending"
+          },
+          "stack": true
+        },
+        "radius": {
+          "field": "ratio",
+          "type": "quantitative",
+          "scale": {
+            "type": "linear",
+            "domain": [
+              0,
+              13
+            ],
+            "range": [
+              19,
+              170
+            ]
+          }
+        },
+        "text": {
+          "field": "abbr"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "radiusOffset": -16,
+        "fontSize": 9.5,
+        "fontWeight": "bold",
+        "font": "DM Sans",
+        "color": "#ffffff"
+      },
+      "encoding": {
+        "theta": {
+          "field": "abbr",
+          "type": "nominal",
+          "sort": {
+            "field": "ratio",
+            "order": "descending"
+          },
+          "stack": true
+        },
+        "radius": {
+          "field": "ratio",
+          "type": "quantitative",
+          "scale": {
+            "type": "linear",
+            "domain": [
+              0,
+              13
+            ],
+            "range": [
+              19,
+              170
+            ]
+          }
+        },
+        "text": {
+          "field": "ratio_label"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "label": "volunteers",
+            "label2": "per paid"
+          }
+        ]
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "text",
+            "text": "volunteers",
+            "x": {
+              "expr": "width / 2"
+            },
+            "y": {
+              "expr": "height/ 2 + 200"
+            },
+            "fontSize": 15,
+            "fontWeight": "bold",
+            "font": "DM Sans",
+            "color": "#64748b",
+            "align": "center",
+            "baseline": "middle"
+          },
+          "encoding": {}
+        },
+        {
+          "mark": {
+            "type": "text",
+            "text": "per paid",
+            "x": {
+              "expr": "width / 2"
+            },
+            "y": {
+              "expr": "height/2 + 220"
+            },
+            "fontSize": 15,
+            "font": "DM Sans",
+            "color": "#64748b",
+            "align": "center",
+            "baseline": "middle"
+          },
+          "encoding": {}
+        }
+      ]
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": "transparent"
+    },
+    "font": "DM Sans",
+    "arc": {
+      "cornerRadius": 4
+    }
+  }
+}

@@ -1,0 +1,6 @@
+quintile,quintile_label,zero_minutes_pct,ci_low,ci_high
+1,Most Disadvantaged,17.2,15.1,19.3
+2,Second Quintile,14.9,12.9,16.9
+3,Middle Quintile,12.1,10.1,14.1
+4,Fourth Quintile,9.1,7.7,10.5
+5,Least Disadvantaged,7.8,6.6,9.0

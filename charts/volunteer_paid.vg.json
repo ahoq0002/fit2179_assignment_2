@@ -1,0 +1,255 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 700,
+  "background": "transparent",
+  
+
+  "projection": {
+    "type": "mercator",
+    "center": [134, -28],
+    "scale": 980
+  },
+
+  "layer": [
+    {
+      "data": {
+        "url": "data/ne_10m_admin_1_states_provinces.json",
+        "format": {
+          "type": "topojson",
+          "feature": "ne_10m_admin_1_states_provinces"
+        }
+      },
+      "transform": [{ "filter": "datum.properties.admin == 'Australia'" }],
+      "mark": {
+        "type": "geoshape",
+        "fill": "#e5e7eb",
+        "stroke": "#ffffff",
+        "strokeWidth": 1.8
+      }
+    },
+
+    {
+      "data": {
+        "values": [
+          { "state": "New South Wales", "abbr": "NSW", "lon": 149.2, "lat": -32.0, "label_lon": 154.3, "label_lat": -30.9, "unpaid": 740, "paid": 60 },
+          { "state": "Victoria", "abbr": "VIC", "lon": 145.1, "lat": -37.0, "label_lon": 151.0, "label_lat": -39.0, "unpaid": 650, "paid": 55 },
+          { "state": "Queensland", "abbr": "QLD", "lon": 145.0, "lat": -22.7, "label_lon": 149.0, "label_lat": -22.4, "unpaid": 480, "paid": 40 },
+          { "state": "South Australia", "abbr": "SA", "lon": 135.3, "lat": -30.2, "label_lon": 138.4, "label_lat": -29.5, "unpaid": 210, "paid": 20 },
+          { "state": "Western Australia", "abbr": "WA", "lon": 121.6, "lat": -26.8, "label_lon": 118.7, "label_lat": -26.0, "unpaid": 295, "paid": 25 },
+          { "state": "Tasmania", "abbr": "TAS", "lon": 147.3, "lat": -42.3, "label_lon": 152.4, "label_lat": -42.0, "unpaid": 75, "paid": 8 },
+          { "state": "Northern Territory", "abbr": "NT", "lon": 132.9, "lat": -19.4, "label_lon": 135.3, "label_lat": -18.4, "unpaid": 35, "paid": 3 },
+          { "state": "Australian Capital Territory", "abbr": "ACT", "lon": 149.3, "lat": -35.3, "label_lon": 154.4, "label_lat": -34.8, "unpaid": 65, "paid": 8 }
+        ]
+      },
+      "layer": [
+        {
+          "mark": {
+            "type": "rule",
+            "color": "#334155",
+            "strokeWidth": 1.1,
+            "opacity": 0.72
+          },
+          "encoding": {
+            "longitude": { "field": "lon", "type": "quantitative" },
+            "latitude": { "field": "lat", "type": "quantitative" },
+            "longitude2": { "field": "label_lon" },
+            "latitude2": { "field": "label_lat" }
+          }
+        },
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "opacity": 0.62,
+            "stroke": "#ffffff",
+            "strokeWidth": 1.8
+          },
+          "encoding": {
+            "longitude": { "field": "lon", "type": "quantitative" },
+            "latitude": { "field": "lat", "type": "quantitative" },
+            "size": {
+              "field": "unpaid",
+              "type": "quantitative",
+              "scale": {
+                "domain": [0, 800],
+                "range": [0, 12000]
+              },
+              "legend": null
+            },
+            "color": { "value": "#14a89d" },
+            "tooltip": [
+              { "field": "state", "title": "State" },
+              { "field": "unpaid", "title": "Unpaid volunteers ('000)" },
+              { "field": "paid", "title": "Paid involvement ('000)" }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "point",
+            "filled": true,
+            "opacity": 0.98,
+            "stroke": "#ffffff",
+            "strokeWidth": 1.2,
+            "color": "#f59e0b"
+          },
+          "encoding": {
+            "longitude": { "field": "lon", "type": "quantitative" },
+            "latitude": { "field": "lat", "type": "quantitative" },
+            "size": {
+              "field": "paid",
+              "type": "quantitative",
+              "scale": {
+                "domain": [0, 800],
+                "range": [0, 12000]
+              },
+              "legend": null
+            },
+            
+            "tooltip": [
+              { "field": "state", "title": "State" },
+              { "field": "paid", "title": "Paid involvement ('000)" },
+              { "field": "unpaid", "title": "Unpaid volunteers ('000)" }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "font": "DM Sans",
+            "fontSize": 12,
+            "fontWeight": "bold",
+            "color": "#172033"
+          },
+          "encoding": {
+            "longitude": { "field": "label_lon", "type": "quantitative" },
+            "latitude": { "field": "label_lat", "type": "quantitative" },
+            "text": { "field": "abbr" }
+          }
+        }
+      ]
+      
+    },
+
+    {
+      "data": {
+        "values": [
+          { "size": 50, "lon": 113.0, "lat": -40.6 },
+          { "size": 200, "lon": 117.0, "lat": -40.6 },
+          { "size": 500, "lon": 122.5, "lat": -40.6 },
+          { "size": 750, "lon": 129.0, "lat": -40.6 }
+        ]
+      },
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "color": "#9ca3af",
+        "opacity": 0.65,
+        "stroke": "#ffffff",
+        "strokeWidth": 1.8
+      },
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
+        "size": {
+          "field": "size",
+          "type": "quantitative",
+          "scale": {
+            "domain": [0, 800],
+            "range": [0, 12000]
+          },
+          "legend": null
+        }
+      }
+    },
+
+    {
+      "data": {
+        "values": [
+          { "label": "50", "lon": 113.0, "lat": -41.75 },
+          { "label": "200", "lon": 116.95, "lat": -42.10 },
+          { "label": "500", "lon": 122.35, "lat": -42.85 },
+          { "label": "750", "lon": 128.90, "lat": -43.35 },
+          { "label": "Total people involved ('000)", "lon": 121.0, "lat": -37.9 }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "font": "DM Sans",
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "align": "center",
+        "color": "#172033"
+      },
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
+        "text": { "field": "label" }
+      }
+    },
+
+    {
+      "data": {
+        "values": [
+          { "type": "unpaid", "lon": 135.4, "lat": -40.8 },
+          { "type": "paid", "lon": 135.4, "lat": -41.8 }
+        ]
+      },
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 140,
+        "stroke": "#ffffff",
+        "strokeWidth": 1.2
+      },
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
+        "color": {
+          "field": "type",
+          "type": "nominal",
+          "scale": {
+            "domain": ["unpaid", "paid"],
+            "range": ["#14a89d", "#f59e0b"]
+          },
+          "legend": null
+        }
+      }
+    },
+
+    {
+      "data": {
+        "values": [
+          { "label": "Colour", "lon": 135.5, "lat": -39.8 },
+          { "label": "Unpaid volunteers", "lon": 136.1, "lat": -40.8 },
+          { "label": "Paid involvement", "lon": 136.1, "lat": -41.8 }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "font": "DM Sans",
+        "fontSize": 12,
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "longitude": { "field": "lon", "type": "quantitative" },
+        "latitude": { "field": "lat", "type": "quantitative" },
+        "text": { "field": "label" },
+        "color": {
+          "condition": [
+            { "test": "datum.label == 'Unpaid volunteers'", "value": "#14a89d" },
+            { "test": "datum.label == 'Paid involvement'", "value": "#f59e0b" }
+          ],
+          "value": "#172033"
+        }
+      }
+    }
+  ],
+
+  "config": {
+    "view": { "stroke": "transparent" },
+    "font": "DM Sans"
+  }
+}

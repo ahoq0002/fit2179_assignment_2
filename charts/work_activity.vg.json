@@ -1,0 +1,144 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 340,
+  "background": "transparent",
+  "data": {
+    "url": "data/work_activity_age.csv"
+  },
+  "transform": [
+    {
+      "fold": [
+        "mostly_sitting",
+        "mostly_standing",
+        "mostly_walking",
+        "mostly_heavy_labour"
+      ],
+      "as": [
+        "work_type",
+        "pct"
+      ]
+    },
+    {
+      "calculate": "datum.work_type == 'mostly_sitting' ? 'Mostly Sitting' : datum.work_type == 'mostly_standing' ? 'Mostly Standing' : datum.work_type == 'mostly_walking' ? 'Mostly Walking' : 'Heavy Labour'",
+      "as": "Work Type"
+    },
+    {
+      "calculate": "datum.work_type == 'mostly_sitting' ? 1 : datum.work_type == 'mostly_standing' ? 2 : datum.work_type == 'mostly_walking' ? 3 : 4",
+      "as": "type_order"
+    }
+  ],
+  "mark": {
+    "type": "area",
+    "interpolate": "monotone",
+    "opacity": 0.82
+  },
+  "encoding": {
+    "x": {
+      "field": "age_group",
+      "type": "ordinal",
+      "scale": {
+        "padding": 0
+      },
+      "axis": {
+        "title": "Age Group",
+        "labelFont": "DM Sans",
+        "labelAngle": 0,
+        "titleFont": "DM Sans",
+        "labelFontSize": 11,
+        "titleFontSize": 11,
+        "domainColor": "#d1d5db",
+        "tickColor": "#d1d5db"
+      }
+    },
+    "y": {
+      "field": "pct",
+      "type": "quantitative",
+      "stack": "normalize",
+      "axis": {
+        "title": "Share of Workers",
+        "format": "%",
+        "labelFont": "DM Sans",
+        "titleFont": "DM Sans",
+        "labelFontSize": 10,
+        "titleFontSize": 11,
+        "gridColor": "#eef2f7"
+      }
+    },
+    "color": {
+      "field": "Work Type",
+      "type": "nominal",
+      "scale": {
+        "domain": [
+          "Mostly Sitting",
+          "Mostly Standing",
+          "Mostly Walking",
+          "Heavy Labour"
+        ],
+        "range": [
+          "#718096",
+          "#f2aa24",
+          "#68b96f",
+          "#df7468"
+        ]
+      },
+      "legend": {
+        "orient": "bottom",
+        "direction": "horizontal",
+        "title": null,
+        "labelFont": "DM Sans",
+        "labelFontSize": 11,
+        "symbolSize": 140
+      }
+    },
+    "fillOpacity": {
+      "condition": {
+        "param": "area_hover",
+        "empty": false,
+        "value": 1
+      },
+      "value": 0.80
+    },
+    "order": {
+      "field": "type_order",
+      "type": "quantitative"
+    },
+    "tooltip": [
+      {
+        "field": "age_group",
+        "title": "Age Group"
+      },
+      {
+        "field": "Work Type"
+      },
+      {
+        "field": "pct",
+        "title": "Share of Workers (%)",
+        "format": ".1f"
+      }
+    ]
+  },
+  "params": [
+    {
+      "name": "area_hover",
+      "select": {
+        "type": "point",
+        "fields": [
+          "Work Type"
+        ],
+        "on": "mouseover",
+        "clear": "mouseout"
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": "transparent"
+    },
+    "font": "DM Sans",
+    "axis": {
+      "domainColor": "#d1d5db",
+      "tickColor": "#d1d5db"
+    }
+  }
+}

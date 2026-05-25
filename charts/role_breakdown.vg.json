@@ -1,0 +1,270 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "background": "transparent",
+
+  "data": {
+    "values": [
+      { "role": "Player Only", "Sex": "Male", "count": 3560 },
+      { "role": "Player Only", "Sex": "Female", "count": 1390 },
+
+      { "role": "Player + Role", "Sex": "Male", "count": 680 },
+      { "role": "Player + Role", "Sex": "Female", "count": 270 },
+
+      { "role": "Coach", "Sex": "Male", "count": 540 },
+      { "role": "Coach", "Sex": "Female", "count": 210 },
+
+      { "role": "Administrator", "Sex": "Male", "count": 380 },
+      { "role": "Administrator", "Sex": "Female", "count": 190 },
+
+      { "role": "Referee / Umpire", "Sex": "Male", "count": 240 },
+      { "role": "Referee / Umpire", "Sex": "Female", "count": 110 },
+
+      { "role": "Other Support", "Sex": "Male", "count": 320 },
+      { "role": "Other Support", "Sex": "Female", "count": 270 }
+    ]
+  },
+
+  "transform": [
+    {
+      "calculate": "format(datum.count, ',')",
+      "as": "count_label"
+    }
+  ],
+
+  "facet": {
+    "field": "role",
+    "type": "nominal",
+    "sort": [
+      "Player Only",
+      "Player + Role",
+      "Coach",
+      "Administrator",
+      "Referee / Umpire",
+      "Other Support"
+    ],
+    "header": {
+      "title": null,
+      "labelFont": "DM Sans",
+      "labelFontSize": 12,
+      "labelFontWeight": "bold",
+      "labelColor": "#172033",
+      "labelPadding": 8
+    }
+  },
+
+  "spec": {
+    "width": 175,
+    "height": 270,
+
+    "layer": [
+      {
+        "mark": {
+          "type": "line",
+          "color": "#94a3b8",
+          "strokeWidth": 2.6,
+          "opacity": 0.75
+        },
+
+        "encoding": {
+          "x": {
+            "field": "Sex",
+            "type": "ordinal",
+            "scale": {
+              "domain": ["Male", "Female"]
+            },
+            "axis": {
+              "title": null,
+              "labelFont": "DM Sans",
+              "labelFontSize": 10,
+              "labelColor": "#64748b",
+              "labelAngle": 0,
+              "domain": false,
+              "ticks": false
+            }
+          },
+
+          "y": {
+            "field": "count",
+            "type": "quantitative",
+            "scale": {
+              "domain": [0, 4000]
+            },
+            "axis": {
+              "title": null,
+              "labelFont": "DM Sans",
+              "labelFontSize": 9,
+              "values": [0, 1000, 2000, 3000, 4000],
+              "gridColor": "#eef2f7",
+              "domain": false
+            }
+          },
+
+          "detail": {
+            "field": "role"
+          }
+        }
+      },
+
+      {
+        "mark": {
+          "type": "point",
+          "filled": true,
+          "size": 115,
+          "stroke": "white",
+          "strokeWidth": 1.5
+        },
+
+        "encoding": {
+          "x": {
+            "field": "Sex",
+            "type": "ordinal",
+            "scale": {
+              "domain": ["Male", "Female"]
+            }
+          },
+
+          "y": {
+            "field": "count",
+            "type": "quantitative",
+            "scale": {
+              "domain": [0, 4000]
+            }
+          },
+
+          "color": {
+            "field": "Sex",
+            "type": "nominal",
+            "scale": {
+              "domain": ["Male", "Female"],
+              "range": ["#2563a8", "#e8864a"]
+            },
+
+            "legend": {
+              "orient": "none",
+              "legendX": 520,
+"legendY": 300,
+              "direction": "horizontal",
+              "title": null,
+              "labelFont": "DM Sans",
+              "labelFontSize": 11,
+              "symbolSize": 120
+            }
+          },
+
+          "tooltip": [
+            {
+              "field": "role",
+              "title": "Role"
+            },
+            {
+              "field": "Sex"
+            },
+            {
+              "field": "count",
+              "title": "Persons involved ('000)",
+              "format": ","
+            }
+          ]
+        }
+      },
+
+      {
+        "transform": [
+          {
+            "filter": "datum.Sex == 'Male'"
+          }
+        ],
+
+        "mark": {
+          "type": "text",
+          "align": "right",
+          "dx": -10,
+          "font": "DM Sans",
+          "fontSize": 10,
+          "fontWeight": "bold",
+          "color": "#2563a8"
+        },
+
+        "encoding": {
+          "x": {
+            "field": "Sex",
+            "type": "ordinal",
+            "scale": {
+              "domain": ["Male", "Female"]
+            }
+          },
+
+          "y": {
+            "field": "count",
+            "type": "quantitative",
+            "scale": {
+              "domain": [0, 4000]
+            }
+          },
+
+          "text": {
+            "field": "count_label"
+          }
+        }
+      },
+
+      {
+        "transform": [
+          {
+            "filter": "datum.Sex == 'Female'"
+          }
+        ],
+
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "dx": 10,
+          "font": "DM Sans",
+          "fontSize": 10,
+          "fontWeight": "bold",
+          "color": "#e8864a"
+        },
+
+        "encoding": {
+          "x": {
+            "field": "Sex",
+            "type": "ordinal",
+            "scale": {
+              "domain": ["Male", "Female"]
+            }
+          },
+
+          "y": {
+            "field": "count",
+            "type": "quantitative",
+            "scale": {
+              "domain": [0, 4000]
+            }
+          },
+
+          "text": {
+            "field": "count_label"
+          }
+        }
+      }
+    ]
+  },
+
+  "resolve": {
+    "scale": {
+      "y": "shared"
+    }
+  },
+
+  "config": {
+    "view": {
+      "stroke": "transparent"
+    },
+
+    "font": "DM Sans",
+
+    "facet": {
+      "spacing": 22
+    }
+  }
+}

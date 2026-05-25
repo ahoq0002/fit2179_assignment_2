@@ -1,0 +1,178 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 260,
+  "background": "transparent",
+  "data": {
+    "url": "data/age_participation.csv"
+  },
+  "transform": [
+    {
+      "fold": [
+        "participation_rate",
+        "male_rate",
+        "female_rate"
+      ],
+      "as": [
+        "series",
+        "rate"
+      ]
+    },
+    {
+      "calculate": "datum.series == 'participation_rate' ? 'All Persons' : datum.series == 'male_rate' ? 'Male' : 'Female'",
+      "as": "Series"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "point": {
+          "filled": true,
+          "size": 65
+        },
+        "interpolate": "monotone"
+      },
+      "encoding": {
+        "x": {
+          "field": "age_group",
+          "type": "ordinal",
+          "axis": {
+            "title": "Age Group",
+            "labelAngle": -25,
+            "labelFont": "DM Sans",
+            "titleFont": "DM Sans",
+            "labelFontSize": 10
+          }
+        },
+        "y": {
+          "field": "rate",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              30,
+              85
+            ]
+          },
+          "axis": {
+            "title": "Participation Rate (%)",
+            "labelFont": "DM Sans",
+            "titleFont": "DM Sans",
+            "labelFontSize": 10,
+            "gridColor": "#e5e7eb"
+          }
+        },
+        "color": {
+          "field": "Series",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "All Persons",
+              "Male",
+              "Female"
+            ],
+            "range": [
+              "#172033",
+              "#2563a8",
+              "#e8864a"
+            ]
+          },
+          "legend": null
+        },
+        "strokeWidth": {
+          "condition": {
+            "test": "datum.Series == 'All Persons'",
+            "value": 4
+          },
+          "value": 2
+        },
+        "opacity": {
+          "condition": {
+            "param": "series_hover",
+            "value": 1
+          },
+          "value": 0.15
+        },
+        "tooltip": [
+          {
+            "field": "age_group",
+            "title": "Age Group"
+          },
+          {
+            "field": "Series"
+          },
+          {
+            "field": "rate",
+            "title": "Rate (%)",
+            "format": ".1f"
+          }
+        ]
+      },"params": [
+    {
+      "name": "series_hover",
+      "select": {
+        "type": "point",
+        "fields": [
+          "Series"
+        ],
+        "on": "click",
+        "clear": "dblclick"
+      }
+    }
+  ]
+    },
+    
+    {
+      "transform": [
+        {
+          "filter": "datum.age_group == '75 and over'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 10,
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "font": "DM Sans"
+      },
+      "encoding": {
+        "x": {
+          "field": "age_group",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "rate",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Series"
+        },
+        "color": {
+          "field": "Series",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "All Persons",
+              "Male",
+              "Female"
+            ],
+            "range": [
+              "#172033",
+              "#2563a8",
+              "#e8864a"
+            ]
+          },
+          "legend": null
+        }
+      }
+    }
+  ],
+  
+  "config": {
+    "view": {
+      "stroke": "transparent"
+    },
+    "font": "DM Sans"
+  }
+}

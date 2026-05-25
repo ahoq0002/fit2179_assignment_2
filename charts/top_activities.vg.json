@@ -1,0 +1,158 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  "height": 420,
+  "background": "transparent",
+
+  "data": { "url": "data/top_activities.csv" },
+
+  "transform": [
+    {
+      "joinaggregate": [
+        { "op": "sum", "field": "total_participants", "as": "grand_total" }
+      ]
+    },
+    {
+      "calculate": "datum.total_participants / datum.grand_total * 100",
+      "as": "pct"
+    },
+    {
+      "calculate": "datum.activity == 'Walking for exercise' ? '🚶 Walking for exercise' : datum.activity == 'Aerobics/fitness' ? '🏋️ Aerobics/fitness' : datum.activity == 'Swimming/Diving' ? '🏊 Swimming/Diving' : datum.activity == 'Cycling' ? '🚴 Cycling' : datum.activity == 'Running/Jogging' ? '🏃 Running/Jogging' : datum.activity == 'Golf' ? '⛳ Golf' : datum.activity == 'Tennis' ? '🎾 Tennis' : datum.activity == 'Australian Rules Football' ? '🏉 Australian Rules Football' : datum.activity == 'Netball' ? '🏐 Netball' : datum.activity == 'Bushwalking' ? '🥾 Bushwalking' : datum.activity == 'Cricket' ? '🏏 Cricket' : datum.activity == 'Soccer' ? '⚽ Soccer' : datum.activity == 'Yoga/Pilates' ? '🧘 Yoga/Pilates' : datum.activity == 'Basketball' ? '🏀 Basketball' : datum.activity == 'Lawn Bowls' ? '🎳 Lawn Bowls' : datum.activity",
+      "as": "activity_icon"
+    },
+    {
+      "calculate": "datum.total_participants / 1000",
+      "as": "participants_millions"
+    },
+    {
+      "calculate": "format(datum.participants_millions, '.2f') + 'M'",
+      "as": "label_millions"
+    }
+  ],
+
+  
+
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "cornerRadiusEnd": 8
+      },
+      "encoding": {
+        "x": {
+          "field": "total_participants",
+          "type": "quantitative",
+          "scale": { "domain": [0, 7000] },
+          "axis": {
+            "title": "Total Participants ('000)",
+            "labelFont": "DM Sans",
+            "titleFont": "DM Sans",
+            "labelFontSize": 10,
+            "gridColor": "#e5e7eb"
+          }
+        },
+        "y": {
+          "field": "activity_icon",
+          "type": "nominal",
+          "sort": { "field": "total_participants", "order": "descending" },
+          "axis": {
+            "title": null,
+            "labelFont": "DM Sans",
+            "labelFontSize": 11
+          }
+        },
+        "color": {
+          "field": "category",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Outdoor & Walking",
+              "Gym & Fitness",
+              "Aquatic",
+              "Cycling & Motor",
+              "Running",
+              "Golf & Racquet",
+              "Team Sports",
+              "Other"
+            ],
+            "range": [
+              "#f2a72a",
+              "#e8864a",
+              "#3a8fbf",
+              "#2563a8",
+              "#e05a3a",
+              "#6bba6b",
+              "#8b5cf6",
+              "#94a3b8"
+            ]
+          },
+          "legend": {
+            "orient": "bottom",
+            "columns": 4,
+            "labelFont": "DM Sans",
+            "titleFont": "DM Sans",
+            "title": "Category",
+            "labelFontSize": 10
+          }
+        },
+        "opacity": {
+          "condition": {
+            "param": "category_select",
+            "value": 1
+          },
+          "value": 0.18
+        },
+        "tooltip": [
+          { "field": "activity", "title": "Activity" },
+          { "field": "category", "title": "Category" },
+          { "field": "total_participants", "title": "Participants ('000)", "format": "," },
+          { "field": "pct", "title": "Share of Total (%)", "format": ".1f" }
+        ]
+      },
+      "params": [
+    {
+      "name": "category_select",
+      "select": {
+        "type": "point",
+        "fields": ["category"]
+      },
+      "bind": "legend"
+    }
+  ]
+    },
+
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 8,
+        "font": "DM Sans",
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#172033"
+      },
+      "encoding": {
+        "x": { "field": "total_participants", "type": "quantitative" },
+        "y": {
+          "field": "activity_icon",
+          "type": "nominal",
+          "sort": { "field": "total_participants", "order": "descending" }
+        },
+        "text": { "field": "label_millions" },
+        "opacity": {
+          "condition": {
+            "param": "category_select",
+            "value": 1
+          },
+          "value": 0.18
+        }
+      }
+    }
+  ],
+
+  "config": {
+    "view": { "stroke": "transparent" },
+    "font": "DM Sans",
+    "axis": { "gridColor": "#e5e7eb" }
+  }
+}
